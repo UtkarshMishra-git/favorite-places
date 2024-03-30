@@ -5,6 +5,11 @@ import 'package:flutter/widgets.dart';
 class PlaceDetailScreen extends StatelessWidget {
   const PlaceDetailScreen({super.key, required this.place});
   final Place place;
+   String get locationImage {
+    final lat = place.location.latitude;
+    final lng = place.location.longitude;
+    return 'https://maps.googleapis.com/maps/api/staticmap?center$lat,$lng=zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=YOUR_API_KEY';
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +25,15 @@ class PlaceDetailScreen extends StatelessWidget {
             height: double.infinity,
           ),
           Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: Column(
               children: [
-                CircleAvatar(),
+                CircleAvatar(radius: 70,backgroundImage: NetworkImage(locationImage),),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  padding:const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  decoration:const BoxDecoration(gradient: LinearGradient(colors: [Colors.transparent,Colors.black54],begin: Alignment.topCenter,end:Alignment.bottomCenter)),
                   alignment: Alignment.center,
                   child: Text(
                     place.location.address,
@@ -36,9 +45,6 @@ class PlaceDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            bottom: 0,
-            left: 0,
-            right: 0,
           ),
         ],
       ),
